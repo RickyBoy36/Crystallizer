@@ -1,0 +1,62 @@
+name: Build Crystallizer AU Plugin
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-macos:
+    runs-on: macos-13
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download JUCE
+        run: |
+          curl -L -o JUCE.zip \
+            "https://github.com/juce-framework/JUCE/releases/download/7.0.9/juce-7.0.9-osx.zip"
+          unzip -q JUCE.zip
+          mv JUCE* JUCE
+
+      - name: Build Projucer and generate project
+        run: |
+          cd JUCE/extras/Projucer/Builds/MacOSX
+          xcodebuild -project Projucer.xcodeproj \
+                     -scheme Projucer \
+                     -configuration Release \
+                     -derivedDataPath ./DerivedData \
+                     CODE_SIGN_IDENTITY="" \
+                     CODE_SIGNING_REQUIRED=NO \
+                     CODE_SIGNING_ALLOWED=NO | tail -5
+          PROJUCER="./DerivedData/Build/Products/Release/Projucer.app/Contents/MacOS/Projucer"
+          "$PROJUCER" --set-global-search-path osx defaultJuceModulePath \
+            "${{ github.workspace }}/JUCE/modules"
+          "$PROJUCER" --resave \
+            "${{ github.workspace }}/Crystallizer.jucer"
+
+      - name: Build AU plugin
+        run: |
+          xcodebuild \
+            -project "Builds/MacOSX/Crystallizer.xcodeproj" \
+            -scheme "Crystallizer - AU" \
+            -configuration Release \
+            -derivedDataPath ./DerivedData \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            MACOSX_DEPLOYMENT_TARGET=10.13 | tail -20
+
+      - name: Package plugin
+        run: |
+          PLUGIN=$(find ./DerivedData -name "Crystallizer.component" | head -1)
+          echo "Found plugin at: $PLUGIN"
+          zip -r Crystallizer-AU.zip "$PLUGIN"
+
+      - name: Upload AU plugin artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Crystallizer-AU
+          path: Crystallizer-AU.zip
+          retention-days: 30
