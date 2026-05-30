@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<JUCERPROJECT id="Crystallizer" name="Crystallizer" projectType="audioplug"
+              version="1.0.0" jucerVersion="7.0.0"
+              companyName="YourName" companyWebsite="" companyCopyright=""
+              pluginFormats="buildAU,buildVST3"
+              pluginName="Crystallizer"
+              pluginDesc="Reverse granular pitch echo"
+              pluginManufacturer="YourName"
+              pluginManufacturerCode="Manu"
+              pluginCode="Crys"
+              pluginChannelConfigs="{2, 2}"
+              pluginIsSynth="0"
+              pluginWantsMidiInput="0"
+              pluginProducesMidiOut="0"
+              pluginIsMidiEffectPlugin="0"
+              pluginEditorRequiresKeys="0"
+              pluginVSTNumMidiInputs="16"
+              pluginVSTNumMidiOutputs="16"
+              aaxIdentifier="com.yourname.crystallizer"
+              pluginAAXCategory="AAX_ePlugInCategory_Dynamics"
+              bundleIdentifier="com.yourname.crystallizer">
+  <MAINGROUP id="main" name="Crystallizer">
+    <GROUP id="source" name="Source">
+      <FILE id="pph" name="PluginProcessor.h"   compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="ppc" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="peh" name="PluginEditor.h"      compile="0" resource="0"
+            file="Source/PluginEditor.h"/>
+      <FILE id="pec" name="PluginEditor.cpp"    compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+    </GROUP>
+  </MAINGROUP>
+
+  <EXPORTERS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug"   isDebug="1" optimisation="1"
+                       targetName="Crystallizer"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3"
+                       targetName="Crystallizer"/>
+      </CONFIGURATIONS>
+    </XCODE_MAC>
+  </EXPORTERS>
+
+  <MODULES>
+    <MODULE id="juce_audio_basics"      showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_devices"     showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_formats"     showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_utils"       showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_core"              showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_data_structures"   showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_events"            showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_graphics"          showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_basics"        showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_extra"         showAllCode="1" useLocalCopy="0"/>
+  </MODULES>
+</JUCERPROJECT>
